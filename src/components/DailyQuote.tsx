@@ -22,6 +22,7 @@ export const DailyQuote = () => {
   const [loading, setLoading] = useState(false);
   const [expiresAt, setExpiresAt] = useState<string | null>(null);
   const [canClick, setCanClick] = useState(true);
+  const [timeLeft, setTimeLeft] = useState<string>('');
 
   // Generate or retrieve session ID
   const getSessionId = () => {
@@ -97,10 +98,28 @@ export const DailyQuote = () => {
     const now = new Date();
     const expiry = new Date(expiresAt);
     const diff = expiry.getTime() - now.getTime();
+    
+    if (diff <= 0) return '0h 0m 0s';
+    
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    return `${hours}h ${minutes}m`;
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    return `${hours}h ${minutes}m ${seconds}s`;
   };
+
+  // Update countdown every second
+  useEffect(() => {
+    if (!expiresAt) return;
+
+    const updateTimer = () => {
+      setTimeLeft(getTimeUntilReset());
+    };
+
+    updateTimer(); // Initial update
+    const interval = setInterval(updateTimer, 1000);
+
+    return () => clearInterval(interval);
+  }, [expiresAt]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-secondary/30 to-accent/20 p-4">
@@ -158,9 +177,9 @@ export const DailyQuote = () => {
 
             <div className="pt-6 border-t border-border/50 space-y-4">
               <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                <Clock className="w-4 h-4" />
+                <Clock className="w-4 h-4 animate-pulse" />
                 <span>
-                  Nuova frase tra: <span className="font-semibold text-primary">{getTimeUntilReset()}</span>
+                  Nuova frase tra: <span className="font-semibold text-primary tabular-nums">{timeLeft}</span>
                 </span>
               </div>
 
