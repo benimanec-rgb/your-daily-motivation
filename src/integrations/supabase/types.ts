@@ -14,7 +14,80 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      daily_quotes: {
+        Row: {
+          expires_at: string
+          id: string
+          quote_id: string
+          session_id: string
+          shown_at: string | null
+        }
+        Insert: {
+          expires_at: string
+          id?: string
+          quote_id: string
+          session_id: string
+          shown_at?: string | null
+        }
+        Update: {
+          expires_at?: string
+          id?: string
+          quote_id?: string
+          session_id?: string
+          shown_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_quotes_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          author: string | null
+          created_at: string | null
+          id: string
+          text: string
+        }
+        Insert: {
+          author?: string | null
+          created_at?: string | null
+          id?: string
+          text: string
+        }
+        Update: {
+          author?: string | null
+          created_at?: string | null
+          id?: string
+          text?: string
+        }
+        Relationships: []
+      }
+      user_sessions: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_seen: string | null
+          session_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_seen?: string | null
+          session_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_seen?: string | null
+          session_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
