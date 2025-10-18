@@ -53,17 +53,6 @@ export const DailyQuote = () => {
     }
   }, []);
 
-  const resetQuote = () => {
-    localStorage.removeItem('dailyspark_quote');
-    localStorage.removeItem('dailyspark_expiry');
-    setQuote(null);
-    setExpiresAt(null);
-    setCanClick(true);
-    setTimeLeft('');
-    toast.success('Dati resettati! 🔄', {
-      description: 'Ora puoi richiedere una nuova frase.',
-    });
-  };
 
   const fetchDailyQuote = async () => {
     setLoading(true);
@@ -195,33 +184,22 @@ export const DailyQuote = () => {
                 </span>
               </div>
 
-              <div className="flex gap-2">
-                <Button
-                  onClick={fetchDailyQuote}
-                  disabled={!canClick || loading}
-                  variant="outline"
-                  size="lg"
-                  className="flex-1 rounded-xl hover:bg-secondary transition-all duration-300"
-                >
-                  {canClick ? 'Ricevi la tua frase' : 'Torna domani per una nuova frase'}
-                </Button>
-                <Button
-                  onClick={resetQuote}
-                  variant="ghost"
-                  size="lg"
-                  className="rounded-xl"
-                  title="Reset per test"
-                >
-                  🔄
-                </Button>
-              </div>
+              <Button
+                onClick={fetchDailyQuote}
+                disabled={!canClick || loading}
+                variant="outline"
+                size="lg"
+                className="w-full rounded-xl hover:bg-secondary transition-all duration-300"
+              >
+                {canClick ? 'Ricevi la tua frase' : 'Torna domani per una nuova frase'}
+              </Button>
             </div>
           </Card>
         )}
 
         {/* Footer */}
         <p className="text-sm text-muted-foreground/60">
-          Una nuova motivazione ogni minuto (modalità test) ✨
+          Una nuova motivazione ogni 24 ore ✨
         </p>
       </div>
     </div>

@@ -135,9 +135,9 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Set expiration to 1 minute from now (for testing)
+    // Set expiration to 24 hours from now
     const expiresAt = new Date();
-    expiresAt.setMinutes(expiresAt.getMinutes() + 1);
+    expiresAt.setHours(expiresAt.getHours() + 24);
 
     // Save the daily quote
     await supabase
